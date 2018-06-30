@@ -30,7 +30,6 @@ public class RegistrationServiceImpl implements RegistrationService {
                     .role(Role.USER)
                     .build();
             userRepository.save(user);
-        }
-        else throw new EmailExistsException("There is an account with that email address:" + userRegistrationForm.getEmail());
+        } else throw new EmailExistsException("There is an account with that email address:" + userRegistrationForm.getEmail());
     }
 }

@@ -35,6 +35,11 @@
                 Запомнить меня
             </label>
         </div>
+        <#if RequestParameters.error??>
+            <div class="alert alert-danger" role="alert">
+                Неправильный логин/пароль
+            </div>
+        </#if>
         <button type="submit" class="btn btn-primary">Войти</button>
     </form>
     <div class="dropdown-divider"></div>

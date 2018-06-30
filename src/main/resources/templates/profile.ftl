@@ -77,7 +77,7 @@
                                       </div>
                                       </section>
 
-                                      <Div class="profile-box">
+                                      <div class="profile-box">
                                         <div class="card">
                                           <div class="body">      
                                             <table class="table table-bordered table-striped table-hover js-basic-example dataTable">

@@ -14,7 +14,7 @@ import java.util.List;
 @EqualsAndHashCode
 @Entity
 @Table(name = "projects")
-@ToString
+@ToString(exclude = {"headOfProjectUser"})
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,14 @@ public class Project {
     private String description;
     private String link;
     private String contacts;
+
+    @OneToOne
+    private User headOfProjectUser;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<User> applicants;
+
     @ManyToMany(fetch = FetchType.LAZY)
-    private List<User> users;
+    private List<User> members;
     private String presentationFile;
 }

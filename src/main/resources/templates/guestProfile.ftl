@@ -12,5 +12,25 @@
     </#list>
 </#if>
 </ul>
+<#if user.projects??>
+
+<div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"> проекты</h3>
+                </div>
+                <div class="panel-body">
+                    <#list user.projects as project>
+                        <li><a target="_blank" href="/project/${project.uuid}"> ${project.name}</a></li>
+                    </#list>
+
+
+            </div>
+        </div>
+    </div>
+    </div>
+</#if>
+
 </body>
 </html>

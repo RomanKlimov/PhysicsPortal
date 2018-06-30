@@ -12,8 +12,12 @@ import ru.tver.hack.models.Project;
 import ru.tver.hack.models.User;
 import ru.tver.hack.services.interfaces.AuthService;
 import ru.tver.hack.services.interfaces.ProjectService;
+import ru.tver.hack.services.interfaces.UserService;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -24,6 +28,9 @@ public class ProjectController {
 
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/addNewProject")
     public String addNewProject(){
@@ -41,12 +48,58 @@ public class ProjectController {
     }
 
     @GetMapping("/project/{uuid}")
-    public String viewProject(@PathVariable("uuid") String uuid, ModelMap modelMap){
+    public String viewProject(@PathVariable("uuid") String uuid, ModelMap modelMap,Authentication authentication){
         Project project = projectService.getProjectUuid(uuid);
         if (project != null){
+            // is user applied or not
+            User user = authService.getUserByAuthentication(authentication);
+            if (!project.getMembers().contains(user)){
+                boolean isApplicant = false;
+                if (project.getApplicants().contains(user)){
+                    isApplicant= true;
+                }
+                modelMap.addAttribute("isApplicant", isApplicant);
+            }
+            if (project.getHeadOfProjectUser().equals(user)){
+                modelMap.addAttribute("isAdminProject", true);
+            }
             modelMap.addAttribute("project", project);
             return "viewProject";
         }else
             return "redirect:/profile";
+    }
+
+    @GetMapping("/apply/{uuid}")
+    public String apply(@PathVariable("uuid") String uuid, Authentication authentication){
+        User user = authService.getUserByAuthentication(authentication);
+        Project project = projectService.getProjectUuid(uuid);
+        if (project != null){
+            List<User> applicants = project.getApplicants();
+            if (!applicants.contains(user)){
+                applicants.add(user);
+                projectService.updateProject(project);
+            }
+        }
+        return "redirect:/project/"+uuid;
+    }
+
+    // accepting or declining applicant
+    @GetMapping("/project/{uuid}/{userEmail}/{response}")
+    public String accept(@PathVariable("uuid") String uuid, @PathVariable(value = "userEmail") String userEmail, @PathVariable("response") String response, Authentication authentication){
+        User user = authService.getUserByAuthentication(authentication);
+        Optional<Project> project = user.getProjects().stream().filter(project1 -> project1.getUuid().equals(uuid)).findFirst();
+        if (project.isPresent()){
+            Optional<User> applicant = project.get().getApplicants().stream().filter(user1 -> user1.getEmail().equals(userEmail)).findFirst();
+            if (applicant.isPresent()){
+                if (response.equals("accept")){
+                    project.get().getMembers().add(applicant.get());
+                }else if (response.equals("decline")){
+                    project.get().getApplicants().remove(applicant.get());
+                }
+                project.get().getApplicants().remove(applicant.get());
+                userService.saveUser(user);
+            }
+        }
+        return "redirect:/project/"+uuid;
     }
 }

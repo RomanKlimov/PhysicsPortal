@@ -3,6 +3,7 @@ package ru.tver.hack.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
-public class RegistrationController {
+public class RegistrationController  {
     @Autowired
     private RegistrationService registrationService;
 
@@ -37,17 +38,21 @@ public class RegistrationController {
 
     @PostMapping("/signUp")
     public String registerUserAccount(@ModelAttribute("userForm") @Valid UserRegistrationForm userRegistrationForm,
-                                      BindingResult errors, WebRequest request, RedirectAttributes attributes, HttpServletRequest httpServletRequest) throws EmailExistsException {
-        if (errors.hasErrors()){
-            attributes.addFlashAttribute("error" , errors.getAllErrors().get(0).getDefaultMessage());
-            return "redirect:/home";
+                                      BindingResult result,  RedirectAttributes attributes) throws EmailExistsException {
+        if (result.hasErrors()){
+            attributes.addFlashAttribute("userRegistrationForm", userRegistrationForm);
+            attributes.addFlashAttribute("error" , result.getAllErrors().get(0).getDefaultMessage());
+            return "redirect:/signUp";
         }
         registrationService.createUserAccount(userRegistrationForm);
         return "redirect:/login";
     }
 
     @GetMapping("/signUp")
-    public String signUp(){
+    public String signUp(Model model){
+        if (!model.containsAttribute("userRegistrationForm")){
+            model.addAttribute("userRegistrationForm", new UserRegistrationForm());
+        }
         return "signUp";
     }
 

@@ -30,6 +30,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     public void addNewProject(Project project, User user) {
         project.setUuid(UUID.randomUUID().toString());
+        project.setHeadOfProjectUser(user);
         user.getProjects().add(project);
         projectRepository.save(project);
         userService.saveUser(user);
@@ -38,5 +39,10 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project getProjectUuid(String uuid) {
         return projectRepository.findFirstByUuid(uuid);
+    }
+
+    @Override
+    public void updateProject(Project project) {
+        projectRepository.save(project);
     }
 }

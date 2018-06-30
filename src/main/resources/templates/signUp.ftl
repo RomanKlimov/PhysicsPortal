@@ -25,7 +25,7 @@
                             <i class="material-icons">Имя</i>
                         </span>
                     <div class="form-line">
-                        <input type="text" class="form-control" name="name" placeholder="Имя " required="" autofocus="" aria-required="true">
+                        <input type="text" class="form-control" name="name" placeholder="Имя " value="${userRegistrationForm.name!}" required="" autofocus="" aria-required="true">
                     </div>
                 </div>
                 <div class="input-group">
@@ -41,7 +41,7 @@
                             <i class="material-icons">email</i>
                         </span>
                     <div class="form-line">
-                        <input type="email" class="form-control" name="email" placeholder="e-mail" required="" aria-required="true">
+                        <input type="email" class="form-control" name="email" placeholder="e-mail" value="${userRegistrationForm.email!}" required="" aria-required="true">
                     </div>
                 </div>
                 <div class="input-group">
@@ -49,7 +49,7 @@
                             <i class="material-icons">Телефон</i>
                         </span>
                     <div class="form-line">
-                        <input type="text" class="form-control" name="phoneNumber" placeholder="Телефон номер" required="" aria-required="true">
+                        <input type="text" class="form-control" name="phoneNumber" placeholder="Телефон номер" value="${userRegistrationForm.phoneNumber!}" required="" aria-required="true">
                     </div>
                 </div>
                 <div class="input-group">
@@ -68,6 +68,11 @@
                         <input type="password" class="form-control" name="confirm" minlength="6" placeholder="Введите еще раз пароль" required="" aria-required="true" aria-invalid="true">
                     </div>
                 </div>
+                <#if error??>
+                <div class="alert alert-danger" role="alert">
+                ${error!}
+                </div>
+                </#if>
                 <button class="btn btn-block btn-lg bg-pink waves-effect" type="submit">Зарегистрироваться</button>
 
                 <div class="m-t-25 m-b--5 align-center">
