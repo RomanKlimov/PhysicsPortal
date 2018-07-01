@@ -56,10 +56,16 @@
                 <div class="panel-body">
                   <#if user.projects??>
                                       <#list user.projects as project>
-                                        <li><a target="_blank" href="/project/${project.uuid}"> ${project.name}</a></li>
+                                          <li><a target="_blank" href="/project/${project.uuid}"> ${project.name}</a></li>
                                       </#list>
 
                                       </#if>
+                      <#if memberOfProjects??>
+                      участник проектов
+                          <#list memberOfProjects as project>
+                              <li><a target="_blank" href="/project/${project.uuid}"> ${project.name}</a></li>
+                          </#list>
+                      </#if>
 
                                       <form action="/addNewProject">
                                         <div class="form-group">

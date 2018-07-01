@@ -32,5 +32,25 @@
     </div>
 </#if>
 
+<#if memberOfProjects??>
+
+<div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"> участник проектов</h3>
+                </div>
+                <div class="panel-body">
+
+                        <#list memberOfProjects as project>
+                            <li><a target="_blank" href="/project/${project.uuid}"> ${project.name}</a></li>
+                        </#list>
+
+            </div>
+        </div>
+    </div>
+    </div>
+</#if>
+
 </body>
 </html>

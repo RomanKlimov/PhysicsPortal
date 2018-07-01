@@ -28,7 +28,7 @@ public class Project {
     @OneToOne
     private User headOfProjectUser;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<User> applicants;
 
     @ManyToMany(fetch = FetchType.LAZY)

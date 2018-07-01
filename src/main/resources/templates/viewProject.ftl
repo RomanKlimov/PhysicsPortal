@@ -17,13 +17,13 @@
 
     <br>
     <br>
-    <#--<#if project.members?? && isAdminProject??>-->
+    <#if project.members?? && isAdminProject??>
         Заявки
         <#list project.applicants as user>
             <li>${user.name} <a href="/project/${project.uuid}/${user.email}/accept">Принять</a> <a href="/project/${project.uuid}/${user.email}/decline">Отказать</a></li>
         <#else >
         </#list>
-    <#--</#if>-->
+    </#if>
 
     <#--if user is admin of this project will not show apply button-->
     <#if isAdminProject??>

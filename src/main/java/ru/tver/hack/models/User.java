@@ -15,7 +15,7 @@ import java.util.List;
 @Table(name = "users")
 @AllArgsConstructor
 @Builder
-@ToString
+@ToString(exclude = {"projects"})
 @EqualsAndHashCode
 public class User {
     public User() {

@@ -9,6 +9,7 @@ import ru.tver.hack.repositories.ProjectRepository;
 import ru.tver.hack.services.interfaces.ProjectService;
 import ru.tver.hack.services.interfaces.UserService;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -37,12 +38,17 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project getProjectUuid(String uuid) {
+    public Project getProjectByUuid(String uuid) {
         return projectRepository.findFirstByUuid(uuid);
     }
 
     @Override
     public void updateProject(Project project) {
         projectRepository.save(project);
+    }
+
+    @Override
+    public List<Project> getProjectsByMember(User user){
+        return projectRepository.findAllByMembersContaining(user);
     }
 }

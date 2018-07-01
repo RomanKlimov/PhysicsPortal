@@ -17,7 +17,6 @@ import ru.tver.hack.services.interfaces.UserService;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Controller
@@ -49,7 +48,7 @@ public class ProjectController {
 
     @GetMapping("/project/{uuid}")
     public String viewProject(@PathVariable("uuid") String uuid, ModelMap modelMap,Authentication authentication){
-        Project project = projectService.getProjectUuid(uuid);
+        Project project = projectService.getProjectByUuid(uuid);
         if (project != null){
             // is user applied or not
             User user = authService.getUserByAuthentication(authentication);
@@ -72,7 +71,7 @@ public class ProjectController {
     @GetMapping("/apply/{uuid}")
     public String apply(@PathVariable("uuid") String uuid, Authentication authentication){
         User user = authService.getUserByAuthentication(authentication);
-        Project project = projectService.getProjectUuid(uuid);
+        Project project = projectService.getProjectByUuid(uuid);
         if (project != null){
             List<User> applicants = project.getApplicants();
             if (!applicants.contains(user)){
@@ -102,4 +101,6 @@ public class ProjectController {
         }
         return "redirect:/project/"+uuid;
     }
+
+
 }
