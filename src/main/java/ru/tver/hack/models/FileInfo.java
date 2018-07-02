@@ -4,22 +4,19 @@ import lombok.*;
 
 import javax.persistence.*;
 
-
 @Setter
 @Getter
-@Builder
 @Entity
-@Table(name = "images")
-@ToString
+@Table(name = "files")
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ImageInfo {
+public class FileInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String fileName;
     private String type;
-    private String storageFileName;
     private String url;
-    private Long uid;
 }

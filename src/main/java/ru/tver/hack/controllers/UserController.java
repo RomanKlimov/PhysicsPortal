@@ -7,11 +7,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.tver.hack.models.FileInfo;
 import ru.tver.hack.models.User;
 import ru.tver.hack.security.Role.Role;
+import ru.tver.hack.services.implementations.FileInfoServiceImpl;
 import ru.tver.hack.services.interfaces.AuthService;
 import ru.tver.hack.services.interfaces.UserService;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 
 @Controller
@@ -22,6 +30,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FileInfoServiceImpl fileInfoService;
 
     @PostMapping("/addSkillToUser")
     public ResponseEntity addNewSkill(@RequestParam("skillName") String skillName, Authentication authentication){
@@ -64,4 +75,28 @@ public class UserController {
     public String getTeamsPage(){
         return "teams";
     }
+
+
+    @PostMapping(value = "/addPhoto", consumes = "multipart/form-data")
+    public String addPhoto( Authentication authentication,  ModelMap modelMap, RedirectAttributes attributes,
+                           @RequestParam("file") MultipartFile file){
+        if (authentication != null) {
+            User user = authService.getUserByAuthentication(authentication);
+            if (file.getSize()>0){
+                FileInfo fileInfo = fileInfoService.savePicture(file);
+                user.setImageUrl(fileInfo.getFileName());
+                System.out.println("TEST SET IMG");
+            }
+            System.out.println("FUCK THAT");
+            return "redirect:/profile";
+        }
+        return "redirect:/";
+    }
+
+    @GetMapping("/photo/{fileName:.+}")
+    public void getPicture(@PathVariable("fileName") String fileName, HttpServletResponse response){
+        fileInfoService.getPicture(fileName, response);
+    }
+
+
 }

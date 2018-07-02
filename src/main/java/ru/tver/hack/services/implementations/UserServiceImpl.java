@@ -57,4 +57,5 @@ public class UserServiceImpl implements UserService {
     public User getUserByEmail(String userEmail) {
         return userRepository.findOneByEmail(userEmail).orElse(null);
     }
+
 }

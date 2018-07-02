@@ -55,4 +55,6 @@ public class User {
 
     @ManyToMany
     private List<Skill> skills;
+
+    private String imageUrl;
 }
