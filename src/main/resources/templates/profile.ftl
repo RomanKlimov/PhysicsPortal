@@ -2,8 +2,9 @@
 <@c.page title="${user.name}" isprof="1"/>
 
 
-<form action="/">
-  <input type="file" class="dropify" data-max-file-size="1mb" data-default-file="/"/>
+<form id="form_validation" enctype="multipart/form-data" action="/addPhoto" method="POST" novalidate="novalidate">
+    <p><input type="file" name="file" data-max-file-size="2mb" data-default-file=""/></p>
+    <p><button type="submit">Добавить фото</button></p>
 </form>
 
 <section>
@@ -14,9 +15,17 @@
           <h1 class="page-header">${user.name}</h1>
           <div class="row">
             <div class="col-md-4">
-              <img src="img/user.png" class="img-thumbnail" alt="">
+
+                <img class="img-thumbnail" src="/photo/${user.imageUrl!}" alt="img/user.png" style="
+                        max-width:  300px;
+                        max-height:  300px;
+                        min-width:  300px;
+                        min-height:  300px;
+                        width: 61px;">
+              <#--<img src="img/user.png" class="img-thumbnail" alt="">-->
+
             </div>
-            <form id="sign_up" action="/updateProfile" method="POST" novalidate="novalidate">
+            <#--<form id="sign_up" action="/updateProfile" method="POST" novalidate="novalidate">-->
 
               <div class="input-group"  width="100px">
                 <span class="input-group-addon">
@@ -45,7 +54,7 @@
               </div>
 
 
-            </form>
+            <#--</form>-->
           </div><br><br>
           <div class="row">
             <div class="col-md-12">

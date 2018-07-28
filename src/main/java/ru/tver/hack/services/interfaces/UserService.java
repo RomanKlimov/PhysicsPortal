@@ -13,4 +13,5 @@ public interface UserService {
     List<User> getUsersBySkills(String input);
 
     User getUserByEmail(String userEmail);
+
 }

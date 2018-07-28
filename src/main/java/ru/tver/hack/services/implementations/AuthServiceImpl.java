@@ -10,12 +10,7 @@ import ru.tver.hack.services.interfaces.AuthService;
 
 import java.util.Optional;
 
-/**
- * Date 23.06.2018
- *
- * @author Hursanov Sulaymon
- * @version v1.0
- **/
+
 @Service
 public class AuthServiceImpl implements AuthService {
 
