@@ -85,6 +85,7 @@ public class UserController {
             if (file.getSize()>0){
                 FileInfo fileInfo = fileInfoService.savePicture(file);
                 user.setImageUrl(fileInfo.getFileName());
+                userService.saveUser(user);
                 System.out.println("TEST SET IMG");
             }
             System.out.println("FUCK THAT");
