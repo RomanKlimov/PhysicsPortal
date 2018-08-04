@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import ru.tver.hack.form.EventDTO;
 import ru.tver.hack.models.Event;
 import ru.tver.hack.models.Project;
 import ru.tver.hack.models.User;
@@ -16,7 +17,11 @@ import ru.tver.hack.services.interfaces.EventService;
 import ru.tver.hack.services.interfaces.UserService;
 
 import javax.validation.Valid;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 @Controller
 public class EventController {
@@ -35,11 +40,21 @@ public class EventController {
     }
 
     @PostMapping("/addNewEvent")
-    public String addNewEvent(@Valid Event event, BindingResult result, Authentication authentication){
+    public String addNewEvent(@Valid EventDTO eventDTO, BindingResult result, Authentication authentication) throws ParseException {
         if (result.hasErrors()){
-            return "redirect:/addNewProject";
+            return "redirect:/addNewEvent";
         }
         User user = authService.getUserByAuthentication(authentication);
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date date = df.parse(String.valueOf(eventDTO.getDate()));
+        Event event = Event.builder()
+                .name(eventDTO.getName())
+                .description(eventDTO.getDescription())
+                .link(eventDTO.getLink())
+                .date(date)
+                .build();
+
         eventService.addNewEvent(event, user);
         return "redirect:/profile";
     }

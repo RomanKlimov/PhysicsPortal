@@ -44,6 +44,8 @@
     <input type="text" name="description" class="form-control">
     Ссылка на pdf файл
     <input type="text" name="link" class="form-control">
+    Дата и время("dd-MM-yyyy hh:mm")
+    <input type="text" name="date" class="form-control">
 
     <input type="submit">
 </form>

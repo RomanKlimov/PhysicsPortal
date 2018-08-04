@@ -1,17 +1,16 @@
 package ru.tver.hack.models;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Getter
 @Setter
 @EqualsAndHashCode
 @Entity
+@Builder
 @Table(name = "events")
 @ToString(exclude = {"headOfEventUser"})
 public class Event {
@@ -43,6 +42,8 @@ public class Event {
 
     //presentation
     private String presentationUrl;
+
+    private Date date;
 
 
 }
