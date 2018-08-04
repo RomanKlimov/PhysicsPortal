@@ -8,39 +8,28 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.util.List;
 
-
 @Getter
 @Setter
 @EqualsAndHashCode
 @Entity
-@Table(name = "projects")
-@ToString(exclude = {"headOfProjectUser"})
-public class Project {
+@Table(name = "events")
+@ToString(exclude = {"headOfEventUser"})
+public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String uuid;
     private String name;
     private String description;
     private String link;
-//    private String contacts;
 
     @OneToOne
-    private User headOfProjectUser;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<User> applicants;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<User> members;
-    private String presentationFile;
+    private User headOfEventUser;
 
     //aka tags
     @ManyToMany
     private List<Skill> skills;
-
-    @ManyToMany
-    private List<Resource> resources;
 
     //logo
     private String imageUrl;
@@ -49,10 +38,11 @@ public class Project {
     @JoinColumn(name = "regions_id")
     private Region region;
 
-    private String space;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<User> members;
 
     //presentation
     private String presentationUrl;
 
-    private Boolean agreement = false;
+
 }

@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Setter
 @Getter
@@ -21,4 +22,15 @@ public class Region {
 
     @Column(unique = true)
     private String regionName;
+
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "region")
+    private List<Project> projects;
+
+    //dont sure about same mapped by
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "region")
+    private List<Event> events;
 }

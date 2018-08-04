@@ -53,6 +53,9 @@ public class User {
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Project> projects;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Event> events;
+
     @ManyToMany
     private List<Skill> skills;
 
