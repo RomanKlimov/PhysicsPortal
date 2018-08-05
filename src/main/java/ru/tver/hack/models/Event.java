@@ -11,6 +11,8 @@ import java.util.List;
 @EqualsAndHashCode
 @Entity
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "events")
 @ToString(exclude = {"headOfEventUser"})
 public class Event {

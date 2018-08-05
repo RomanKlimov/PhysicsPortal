@@ -11,4 +11,5 @@ import java.util.List;
 public interface EventRepository extends JpaRepository<Event, Long> {
     Event findFirstByUuid(String uuid);
     List<Event> findAllByMembersContaining(User user);
+    List<Event>     findAllByOrderByDate();
 }

@@ -9,8 +9,10 @@ import ru.tver.hack.repositories.EventRepository;
 import ru.tver.hack.services.interfaces.EventService;
 import ru.tver.hack.services.interfaces.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class EventServiceImpl implements EventService{
@@ -42,6 +44,20 @@ public class EventServiceImpl implements EventService{
     public void updateEvent(Event event) {
         eventRepository.save(event);
 
+    }
+
+    @Override
+    public List<Event> getNearEvents() {
+        List<Event> allOrderedByDate = eventRepository.findAllByOrderByDate();
+        java.util.Date date=new java.util.Date();
+        List<Event> nearEvent = new ArrayList<>();
+        for(Event event : allOrderedByDate){
+            if(event.getDate().compareTo(date) > 0) {
+                nearEvent.add(event);
+            }
+        }
+        //getting first 3 nearest events
+        return nearEvent.stream().limit(3).collect(Collectors.toList());
     }
 
     @Override

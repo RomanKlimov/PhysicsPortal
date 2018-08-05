@@ -11,6 +11,7 @@ public interface EventService {
     void addNewEvent(Event event, User user);
     Event getEventByUuid(String uuid);
     void updateEvent(Event event);
+    List<Event> getNearEvents();
 
     List<Event> getProjectsByMember(User user);
 }

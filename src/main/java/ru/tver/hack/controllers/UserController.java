@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.tver.hack.models.Event;
 import ru.tver.hack.models.Project;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -17,6 +18,7 @@ import ru.tver.hack.models.User;
 import ru.tver.hack.security.Role.Role;
 import ru.tver.hack.services.implementations.FileInfoServiceImpl;
 import ru.tver.hack.services.interfaces.AuthService;
+import ru.tver.hack.services.interfaces.EventService;
 import ru.tver.hack.services.interfaces.ProjectService;
 import ru.tver.hack.services.interfaces.UserService;
 
@@ -40,11 +42,16 @@ public class UserController {
     @Autowired
     private FileInfoServiceImpl fileInfoService;
 
+    @Autowired
+    private EventService eventService;
+
     @PostMapping("/addSkillToUser")
     public ResponseEntity addNewSkill(@RequestParam("skillName") String skillName, Authentication authentication){
         if (authentication != null){
             User user = authService.getUserByAuthentication(authentication);
             userService.addSkillToUser(skillName, user);
+            List<Event> nearEvents = eventService.getNearEvents();
+            System.out.println(nearEvents);
             return ResponseEntity.status(HttpStatus.OK).build();
         }else return ResponseEntity.badRequest().build();
     }
