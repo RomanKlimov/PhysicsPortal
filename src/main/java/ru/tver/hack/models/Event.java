@@ -40,6 +40,9 @@ public class Event {
     private Region region;
 
     @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(name="even_members",
+//                joinColumns = { @JoinColumn(name = "event_id") },
+//            inverseJoinColumns = { @JoinColumn(name = "member_id") })
     private List<User> members;
 
     //presentation

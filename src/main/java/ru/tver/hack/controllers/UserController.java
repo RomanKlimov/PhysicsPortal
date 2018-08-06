@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -45,13 +46,22 @@ public class UserController {
     @Autowired
     private EventService eventService;
 
+    @Transactional
     @PostMapping("/addSkillToUser")
     public ResponseEntity addNewSkill(@RequestParam("skillName") String skillName, Authentication authentication){
         if (authentication != null){
             User user = authService.getUserByAuthentication(authentication);
             userService.addSkillToUser(skillName, user);
             List<Event> nearEvents = eventService.getNearEvents();
-            System.out.println(nearEvents);
+            List<Event> events = user.getEvents();
+            for(Event event : nearEvents) {
+                if(!events.contains(event)){
+                    events.add(event);
+                    event.getMembers().add(user);
+                    eventService.updateEvent(event);
+                }
+            }
+            userService.saveUser(user);
             return ResponseEntity.status(HttpStatus.OK).build();
         }else return ResponseEntity.badRequest().build();
     }
