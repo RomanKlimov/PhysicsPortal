@@ -24,8 +24,10 @@ public class RegistrationServiceImpl implements RegistrationService {
         if (!userRepository.findByEmailOrPhoneNumber(userRegistrationForm.getEmail(),userRegistrationForm.getPhoneNumber()).isPresent()){
             User user = User.builder()
                     .name(userRegistrationForm.getName())
+                    .lastName(userRegistrationForm.getLastName())
                     .email(userRegistrationForm.getEmail())
                     .phoneNumber(userRegistrationForm.getPhoneNumber())
+                    .city(userRegistrationForm.getCity())
                     .hashPassword(passwordEncoder.encode(userRegistrationForm.getPassword()))
                     .role(Role.USER)
                     .build();

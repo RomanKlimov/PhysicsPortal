@@ -54,6 +54,14 @@
                 </div>
                 <div class="input-group">
                         <span class="input-group-addon">
+                            <i class="material-icons">Место проживания</i>
+                        </span>
+                    <div class="form-line">
+                        <input type="text" class="form-control" name="city" placeholder="Город или населенный пункт" value="${userRegistrationForm.city!}" required="" aria-required="true">
+                    </div>
+                </div>
+                <div class="input-group">
+                        <span class="input-group-addon">
                             <i class="material-icons">Пароль</i>
                         </span>
                     <div class="form-line">

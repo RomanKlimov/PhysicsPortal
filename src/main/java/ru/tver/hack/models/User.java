@@ -35,6 +35,9 @@ public class User {
     @Column(name = "lastName")
     private String lastName;
 
+    @Column(name = "city")
+    private String city;
+
     @NotNull
     @Email
     @Column(name = "email", unique = true)
