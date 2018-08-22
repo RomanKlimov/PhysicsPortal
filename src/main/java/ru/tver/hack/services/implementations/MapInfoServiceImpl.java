@@ -1,34 +1,20 @@
 package ru.tver.hack.services.implementations;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import jdk.nashorn.internal.parser.JSONParser;
-import org.json.JSONArray;
+import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 import ru.tver.hack.models.MapInfo;
 import ru.tver.hack.repositories.MapInfoRepository;
 import ru.tver.hack.services.interfaces.MapInfoService;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 @Service
@@ -50,22 +36,20 @@ public class MapInfoServiceImpl implements MapInfoService {
         String strArray[] = position.split(" ");
 
 //        Stream<Object[]> allMapInfo = mapInfoRepository.findAllMapInfo();
-        List<MapInfo> allMapInfo = mapInfoRepository.findAllMapInfo();
+        Stream<Object[]> allMapInfo = mapInfoRepository.findAllMapInfo();
 
 //        if(Float.valueOf(strArray[0]) == map[0])
 //      I need to get lat parametr of MapInfo model, using streams
-        //ok, fuck streams, lets do it without
+        //ok, fuck streams, lets do it without   (streams the best)
 //        allMapInfo.forEach(map -> {map[0]});
         //before add new , need do check if exist
-        boolean flag = true;
-        for(MapInfo mi : allMapInfo) {
-            if (mi.getLat() == Float.valueOf(strArray[0])) {
-                if (mi.getLng() == Float.valueOf(strArray[1])) {
-                    flag = false;
-                    break;
-                }
+        AtomicBoolean flag = new AtomicBoolean(true);
+
+        allMapInfo.forEach(mi -> {
+            if (flag.get() && ((Float) mi[2]).equals(Float.valueOf(strArray[0])) && ((Float) mi[3]).equals(Float.valueOf(strArray[1]))) {
+                flag.compareAndSet(true,false);
             }
-        }
+        });
 
         MapInfo mapInfo = MapInfo.builder()
                 .city(city)
@@ -74,15 +58,14 @@ public class MapInfoServiceImpl implements MapInfoService {
                 .people(1)
                 .build();
 
-        if (flag) {
+        if (flag.get()) {
             mapInfoRepository.save(mapInfo);
         }
         //incrementing people counter, need to get MapInfo by current city
-        if (!flag) {
+        if (!flag.get()) {
             MapInfo mapByCity = mapInfoRepository.findByCity(city);
             int people = mapByCity.getPeople();
-            people++;
-            mapByCity.setPeople(people);
+            mapByCity.setPeople(++people);
             mapInfoRepository.save(mapByCity);
 
         }
