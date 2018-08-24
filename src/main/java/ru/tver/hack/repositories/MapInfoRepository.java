@@ -15,4 +15,7 @@ public interface MapInfoRepository extends JpaRepository<MapInfo, Long> {
     Stream<Object[]> findAllMapInfo();
 
     MapInfo findByCity(String city);
+
+    @Query(value = "SELECT * FROM map", nativeQuery = true)
+      List<MapInfo> findListMapInfo();
 }

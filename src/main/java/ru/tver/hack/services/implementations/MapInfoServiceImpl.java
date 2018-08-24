@@ -14,11 +14,15 @@ import ru.tver.hack.repositories.MapInfoRepository;
 import ru.tver.hack.services.interfaces.MapInfoService;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 @Service
 public class MapInfoServiceImpl implements MapInfoService {
+
+
 
     @Autowired
     MapInfoRepository mapInfoRepository;
@@ -46,7 +50,7 @@ public class MapInfoServiceImpl implements MapInfoService {
         AtomicBoolean flag = new AtomicBoolean(true);
 
         allMapInfo.forEach(mi -> {
-            if (flag.get() && ((Float) mi[2]).equals(Float.valueOf(strArray[0])) && ((Float) mi[3]).equals(Float.valueOf(strArray[1]))) {
+            if (flag.get() && mi[2].equals(Float.valueOf(strArray[0])) && mi[3].equals(Float.valueOf(strArray[1]))) {
                 flag.compareAndSet(true,false);
             }
         });
@@ -70,5 +74,21 @@ public class MapInfoServiceImpl implements MapInfoService {
 
         }
 
+    }
+
+    @Override
+    public List<MapInfo> getAll() {
+//        Stream<Object[]> allMapInfo = mapInfoRepository.findAllMapInfo();
+//        List<MapInfo> list = new ArrayList<>();
+//        Stream.of(allMapInfo)
+////                .filter(mi -> mi instanceof MapInfo)
+//                .map(mi -> (MapInfo) mi)
+//                .forEach(mi -> list.add(mi));
+
+//        allMapInfo.forEach(mi -> {
+//            list.add((MapInfo) mi);
+//        });
+
+        return mapInfoRepository.findListMapInfo();
     }
 }
